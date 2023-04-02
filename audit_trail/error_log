@@ -1,0 +1,5 @@
+[18-Dec-2022 17:59:17 UTC] PHP Warning:  session_start(): Cannot start session when headers already sent in /home/gmekdpli/public_html/badili_group/audit_trail/audit_trail.php on line 3
+[18-Dec-2022 17:59:26 UTC] PHP Warning:  session_start(): Cannot start session when headers already sent in /home/gmekdpli/public_html/badili_group/audit_trail/audit_trail.php on line 3
+[18-Dec-2022 17:59:34 UTC] PHP Warning:  session_start(): Cannot start session when headers already sent in /home/gmekdpli/public_html/badili_group/audit_trail/audit_trail.php on line 3
+[18-Dec-2022 18:01:32 UTC] PHP Warning:  session_start(): Cannot start session when headers already sent in /home/gmekdpli/public_html/badili_group/audit_trail/audit_trail.php on line 3
+[18-Dec-2022 18:02:44 UTC] PHP Warning:  session_start(): Cannot start session when headers already sent in /home/gmekdpli/public_html/badili_group/audit_trail/audit_trail.php on line 3

@@ -1,0 +1,5 @@
+
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^portal\.badilisacco\.co\.ke$
+RewriteRule ^/?$ "https\:\/\/portal\.badilisacco\.co\.ke\/" [R=301,L]
+
