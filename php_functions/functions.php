@@ -946,5 +946,31 @@ function update_loan_schedule($loan_id, $val_date){
 
 }
 
+function get_loan_schedule_data($loan_id){
+    global $dbh;
+    $staus = "1";
+    $sql="SELECT id,loan_id,date_due, amount ,amount_paid,date_paid,status,principal_paid,interest_amount,principal_bal from  loan_schedule where loan_id=:eid and status=:staus  ";
+    $query = $dbh -> prepare($sql);
+    $query->bindParam(':staus', $staus, PDO::PARAM_STR);
+    $query->bindParam(':eid', $loan_id, PDO::PARAM_STR);
+    $query->execute();
+    $results=$query->fetchAll(PDO::FETCH_OBJ);
+    $cnt=0;
+    $data_array = array();
+    foreach ($results as $row) {
+        $id                 =   $row->id ;
+        $date_due           =   $row->date_due;
+        $amount             =   $row->amount;
+        $date_paid          =   $row->date_paid;
+        $amount_paid        =   $row->amount_paid;
+        $principal_paid     =   $row->principal_paid;
+        $interest_amount    =   $row->interest_amount;
+        $principal_bal      =   $row->principal_bal;
+        $data_array[$cnt] = array($id,$date_due,$amount,$amount_paid,$date_paid,$principal_paid,$interest_amount,$principal_bal);
+        $cnt++;
+    }
+    return $data_array;
+}
+
 
 ?>
