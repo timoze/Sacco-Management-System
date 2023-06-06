@@ -417,10 +417,17 @@ function calculateInterest($emi, $interestRate, $outstandingLoanBalance, $period
     return $interestPaid;
 }*/
 function calculateInterest($outstandingLoanBalance, $interestRate, $emi) {
-    // convert annual interest rate to monthly rate
-    $monthlyInterestRate = $interestRate / 12 / 100;
-    // calculate interest paid for the repayment period
-    $interestPaid = $outstandingLoanBalance * $monthlyInterestRate;
+    if (LOAN_FORMULA == '1') {
+        // convert annual interest rate to monthly rate
+        $monthlyInterestRate = $interestRate / 12 / 100;
+        // calculate interest paid for the repayment period
+        $interestPaid = $outstandingLoanBalance * $monthlyInterestRate;
+    }elseif (LOAN_FORMULA == '2') {
+        // convert annual interest rate to monthly rate
+        $monthlyInterestRate = $interestRate / 100;
+        // calculate interest paid for the repayment period
+        $interestPaid = $emi * $monthlyInterestRate;
+    }
     // update outstanding loan balance
     $outstandingLoanBalance = $outstandingLoanBalance - ($emi - $interestPaid);
     return $interestPaid;
@@ -831,9 +838,30 @@ function get_role_name($dbh,$role_id){
     $results=$query_amount->fetchAll(PDO::FETCH_OBJ);
     foreach ($results as $row) 
     {
-		$role = $row->role_id;
+		$role = $row->role;
     }
     return $role;
+}
+
+function get_member_roles($member_id){
+
+    global $dbh;
+
+    $staus = "1";
+    $sql="SELECT * from  user_role_assignment WHERE status= :staus and user_id=:memberid ";
+    $query = $dbh -> prepare($sql);
+    $query->bindParam(':staus', $staus, PDO::PARAM_STR);
+    $query->bindParam(':memberid', $member_id, PDO::PARAM_STR);
+    $query->execute();
+    $results=$query->fetchAll(PDO::FETCH_OBJ);
+    $cnt=1;
+   
+    foreach ($results as $row) {
+        $uroles     = $row->roles;
+    }
+    $user_roles_array = explode(", ", $uroles);
+
+    return $user_roles_array;
 }
 
 function mail_configs(){
@@ -846,6 +874,12 @@ function mail_configs(){
     $mail_configs = array($email_host,$email_username, $email_port,$email_ky,$from_name);
     return $mail_configs;
 }
+function disbursement_date_from_loan_id($loan_id){
+    global $connection;
+    $disb_date_query = mysqli_fetch_assoc(mysqli_query($connection, "SELECT contribution_date from member_contribution where  loan_id='$loan_id'  and status=1 and cr_dr='C' "));
+    $disb_date = $disb_date_query['contribution_date'];
+    return $disb_date;
+}
 
 function update_loan_schedule($loan_id, $val_date){
 
@@ -853,6 +887,8 @@ function update_loan_schedule($loan_id, $val_date){
 
     $loan_details_array = loan_details_fromloanid($dbh,$loan_id);
 
+    //disb date 
+    $disb_date = disbursement_date_from_loan_id($loan_id);
     $period             =   $loan_details_array[0][7];
     $loan_principal     =   $loan_details_array[0][4];
 
@@ -868,7 +904,7 @@ function update_loan_schedule($loan_id, $val_date){
     $total_payment_amount   =   0;
     // $total_interest           =   0;
     //if ($query->rowCount() > 0) {
-    $start_date1 = $loan_details_array[0][3];
+    $start_date1 = $disb_date;
     $member_id =  $loan_details_array[0][1];
     $start_date_array = array();
     $cnt = 0;
@@ -971,6 +1007,7 @@ function get_loan_schedule_data($loan_id){
     }
     return $data_array;
 }
+
 
 
 ?>

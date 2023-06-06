@@ -125,7 +125,7 @@ if (!CheckSession())
                                 $total_payment_amount   =   0;
                                // $total_interest           =   0;
                                 //if ($query->rowCount() > 0) {
-                                $start_date1 = $loan_details_array[0][3];
+                                $start_date1 = disbursement_date_from_loan_id($loan_id);
                                 $member_id =  $loan_details_array[0][1];
                                 $start_date_array = array();
                                 $cnt = 0;

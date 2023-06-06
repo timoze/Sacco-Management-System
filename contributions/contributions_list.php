@@ -14,6 +14,7 @@ if (!CheckSession())
     $user_department = get_user_departmentfrom_id($dbh, $logged_inuser);
     //print $user_department;
     $department_name = get_user_department($dbh, $user_department);
+    $member_roles_array = get_member_roles($logged_inuser);
   	?>
 <!DOCTYPE HTML>
 <html>
@@ -52,7 +53,7 @@ if (!CheckSession())
                           <div class="col-sm-12">
                             <div class="card-box table-responsive">
                             <?php
-								if($user_department == 5)
+								if(in_array(1,$member_roles_array) )
 								{ ?>
                             <a href='javascript: void(0)' onclick=javascript:poptastic('./new_contribution.php',850,750,'new_contribution') title='Click to Add New Member' style='text-decoration:none'><button class='btn btn-success'>New Contribution</button></a>
                             <?php }?>
@@ -74,7 +75,7 @@ if (!CheckSession())
 									</thead>
 								<tbody>
 								<?php
-								if($user_department != 5)
+								if(!in_array(4,$member_roles_array) )
 								{ 
 									//$client_name=$_POST['client_name']; 
 									$search_query = " AND member_id=:loggeduser ";
@@ -88,7 +89,7 @@ if (!CheckSession())
 								$query = $dbh -> prepare($sql);
 								$query->bindParam(':staus',$staus,PDO::PARAM_STR);
               //  $query->bindParam(':crdr',$cr_dr,PDO::PARAM_STR);
-                if($user_department != 5)
+                if(!in_array(4,$member_roles_array) )
 								{ 
                   $query->bindParam(':loggeduser',$logged_inuser,PDO::PARAM_STR);
                 }
@@ -114,7 +115,7 @@ if (!CheckSession())
                     $view = '<a id="other" class="dropdown-item" href="javascript: void(0)" onclick=javascript:poptastic("./view_contribution_details.php?contribution_id='.$row->id.'","750","800","view_invoice") title="Click to View" style="text-decoration:none">View Details</a>';
                     $edit = '';
                     $load = '';
-                    if($user_department == 5)
+                    if(in_array(1,$member_roles_array) )
                     { 
                         $edit = '<a id="other" class="dropdown-item" href="javascript: void(0)" onclick=javascript:poptastic("./edit_contribution_details.php?editid='.$row->id.'","850","750","edit_user_details") title="Click to Edit User Details" style="text-decoration:none">Edit</a>';
                         $load = '<input type="checkbox" id="check-all" class="delete-id" name="chk_id[]" value="<?php echo $id;?>" onClick="document.go.disabled=false">';

@@ -49,6 +49,7 @@ if (!CheckSession())
                           <div class="col-sm-12">
                             <div class="card-box ">
                       <a href='javascript: void(0)' onclick=javascript:poptastic('./new_loan_application.php',700,600,'new_loan_application') title='Click to Apply Member Loan' style='text-decoration:none'><button class='btn btn-success'>New Loan Application</button></a>
+                      <a href='javascript: void(0)' onclick=javascript:poptastic('./new_loan_application_old.php',700,600,'new_loan_application') title='Click to Apply Member Loan' style='text-decoration:none'><button class='btn btn-success'>Old Loan Application</button></a>
                       <form method="post" id="form1" novalidate>
 								<table id="loan_appl_list" class="table table-striped table-bordered" style="width:100%"> 
 									<thead> 
